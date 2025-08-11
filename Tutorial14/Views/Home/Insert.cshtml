@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Insert";
+}
+
+<h2>Insert</h2>
+@using (Html.BeginForm("DoInsert", "Home", FormMethod.Post))
+{
+    <label>Name</label>
+    <br />
+    @Html.TextBox("fullName", null, new { @class = "form-control", @type = "text" });
+
+    <label>Club Name</label>
+    <br />
+    <select name="clubName" class="form-control" required>
+        <option value=" ">Select Club</option>
+        <option value="Blue Sky">Blue Sky</option>
+        <option value="Rotary">Rotary</option>
+        <option value="Red Hat">Red Hat</option>
+        <option value="Spicy">Spicy</option>
+    </select>
+
+    <label>Age</label>
+    <br />
+    @Html.TextBox("age", null, new { @class = "form-control", @type = "number" });
+
+    <label>Fee</label>
+    <br />
+    @Html.TextBox("fee", null, new { @class = "form-control", @type = "number" , step="0.01", required="required"});
+
+    <button type="submit">Add</button>
+}

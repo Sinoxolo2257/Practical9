@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+@using (Html.BeginForm("DoDelete", "Home", FormMethod.Post)){ 
+    <label>ID</label><br />
+    @Html.TextBox("id",null, new { @class = "form-control", @type = "number" });
+<button type="submit">Delete</button>
+}
+
+
+
