@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Cache;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Tutorial14.Models;
@@ -49,12 +50,11 @@ namespace Tutorial14.Controllers
             return View("Index");
         }
 
-        public ActionResult Update()
+        public ActionResult EditMember()
         {
             return View();
         }
-
-        public ActionResult FindMemberForUpdate(int id)
+        public ActionResult DoUpdate(int id)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Tutorial14.Controllers
                         }
                     }
                 }
-                return View("UpdateMember", member);
+                return View("EditMember", member);
             }
             catch (Exception err)
             {
@@ -96,15 +96,42 @@ namespace Tutorial14.Controllers
             }
         }
 
-        public ActionResult DoUpdate(int id, string fullName ,string clubname, int age, decimal fee)
+        public ActionResult Update()
+        {
+            return View();
+        }
+
+
+
+        public ActionResult FindMemberForUpdate(ClubMemb member)
         {
             try
             {
-                SqlCommand myUpdateCommand = new SqlCommand("Update Name Set Name='"+fullName+"' where ID="+id, myConnection);
+                string sql = @"UPDATE [Name]
+                            SET FullName = @FullName, 
+                                ClubName = @ClubName,  
+                                Age = @Age, 
+                                Fee = @Fee 
+                                WHERE ID = @ID";
+                using (SqlCommand cmd = new SqlCommand(sql, myConnection))
+                {
+                    cmd.Parameters.AddWithValue("@ID",member.Id);
+                    cmd.Parameters.AddWithValue("@FullName", member.FullName);
+                    cmd.Parameters.AddWithValue("@ClubName", member.ClubName);
+                    cmd.Parameters.AddWithValue("@Age", member.Age);
+                    cmd.Parameters.AddWithValue("@Fee", member.Fee);
+                    myConnection.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
 
-                myConnection.Open();
-                int rowsAffected = myUpdateCommand.ExecuteNonQuery();
-                ViewBag.Message = "Success: " + rowsAffected + " rows updated.";
+                    if (rowsAffected > 0) {
+                        ViewBag.Message = "Success: " + rowsAffected + " row updated.";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "No rows were updated. Please check the ID.";
+                    }
+                        
+                }
             }
             catch (Exception err)
             {

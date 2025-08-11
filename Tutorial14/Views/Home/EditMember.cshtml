@@ -1,0 +1,43 @@
+﻿@model Tutorial14.Models.ClubMemb
+@{
+    ViewBag.Title = "Edit Member to Update";
+}
+
+<h2>Edit Member</h2>
+@using (Html.BeginForm("FindMemberForUpdate", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group mb-3">
+        @Html.LabelFor(model => model.FullName) 
+        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", type = "text", required = "required" })
+    </div>
+    <br />
+
+    <div class="form-group mb-3">
+        @Html.LabelFor(model => model.ClubName)
+        <select name="ClubName" class="form-control" required>
+            <option value="Blue Sky" @(Model.ClubName == "Blue Sky" ? "selected" : " ")>Blue Sky </option>
+            <option value="Rotary" @(Model.ClubName == "Rotary" ? "selected" : " ")>Rotary</option>
+            <option value="Red Hat" @(Model.ClubName == "Red Hat" ? "selected" : " ")>Red Hat</option>
+            <option value="Spicy" @(Model.ClubName == "Spicy" ? "selected" : " ")>Spicy</option>
+        </select>
+    </div>
+   
+
+    <div class="form-group mb-3">
+        @Html.LabelFor(model => model.Age)
+        @Html.TextBoxFor(model => model.Age, new { @class = "form-control", type = "number", required = "required" })
+    </div>
+ 
+
+    <div class="form-group mb-3">
+        @Html.LabelFor(model => model.Fee)
+        @Html.TextBoxFor(model => model.Fee, new { @class = "form-control", type = "number", step = "0.01", required = "required" }) <br />
+    </div>
+
+
+    <button type="submit">Save changes</button>
+    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+}
+
